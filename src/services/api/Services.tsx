@@ -18,11 +18,14 @@ class GApiServices {
         }
     }
 
-    login = async (name: string, password: string) => {
+    login = async (data: { name: string, password: string, deviceID: string, deviceName: string }) => {
         try {
+            const { name, password, deviceID, deviceName } = data
             const response = await Api.post(EndPoints.login, {
                 userName: name,
-                password: password
+                password: password,
+                deviceID: deviceID,
+                deviceName: deviceName
             })
             await setData(storageKeys.ACCESS_TOKEN, response?.data?.data?.token)
             return

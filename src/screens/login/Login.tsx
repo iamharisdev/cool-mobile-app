@@ -5,6 +5,8 @@ import { hp, wp } from '../../global'
 import { ApiServices, emptyFieldError } from '../../services/api'
 import { SimpleLoader } from '../../components/loaders'
 import { StorageManager, useGlobalContext } from '../../services'
+import { getDeviceID } from '../../services/common/CommonServices'
+import DeviceInfo from 'react-native-device-info'
 
 const Login = ({ navigation }: any) => {
     const { setData, storageKeys } = StorageManager
@@ -32,7 +34,15 @@ const Login = ({ navigation }: any) => {
         else if(usernameModified.length !== 0 && passwordModified.length !== 0) {
             setLoader(true)
             try {
-                await ApiServices.login(usernameModified, passwordModified)
+                const deviceID = await getDeviceID()
+                const deviceName = await DeviceInfo.getDeviceName()
+                const data = {
+                    name: usernameModified,
+                    password: passwordModified,
+                    deviceID: deviceID,
+                    deviceName: deviceName
+                }
+                await ApiServices.login(data)
                 const response = await ApiServices.getMyProfile()
                 await setData(storageKeys.USER, response)
                 setCurrentUser(response)
