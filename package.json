@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "ios": "npx react-native run-ios --udid F0C3DD82-65A0-4172-BF4A-989A5240F4C7",
+    "ios": "npx react-native run-ios --udid 523B936F-D05D-43FE-B0D1-33D02C906DE9",
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest"

@@ -29,6 +29,7 @@ const Messages = (props: MeetingProps) => {
     const [deviceID, setDeviceID] = useState('')
     const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
     const [imageToSend, setImageToSend] = useState('')
+    const [imageToSendSize, setImageToSendSize] = useState(3)
 
     const {
         visible = false,
@@ -139,6 +140,7 @@ const Messages = (props: MeetingProps) => {
     const onChangeText = (text: string) => setMessageInput(text)
 
     const onSendPress = async () => {
+
         setMessageInput('')
         let messageObj: any = {
             deviceID,
@@ -155,11 +157,80 @@ const Messages = (props: MeetingProps) => {
             ...messages,
         ]
         setMessages(newMessageArray)
+        if(imageToSend.length !== 0) {
+            setImageToSend('')
+            const chunkSize = imageToSend.length / imageToSendSize;
+            const totalChunks = Math.ceil(imageToSend.length / chunkSize);
+            console.log('totalChunks =>', totalChunks)
+            let chunksProcessed = 0;
 
-        await socket?.emit('room.activity', {
-            activityType: 'messages',
-            ...messageObj
-        })
+            async function sendChunk(chunk: any, callback: any) {
+
+                await socket?.emit('room.activity', {
+                    activityType: 'messages',
+                    deviceID,
+                    chunk: chunk
+                })
+                chunksProcessed++;
+
+                if(chunksProcessed === totalChunks) {
+                    if(callback) {
+                        callback();
+                    }
+                }
+            }
+
+            for(let i = 0; i < imageToSend.length; i += chunkSize) {
+                const chunk = imageToSend.substring(i, i + chunkSize);
+                sendChunk(chunk, async () => {
+                    delete messageObj.image
+                    await socket?.emit('room.activity', {
+                        activityType: 'messages',
+                        ...messageObj,
+                        chunkFinished: true
+                    })
+                });
+            }
+        } else {
+            await socket?.emit('room.activity', {
+                activityType: 'messages',
+                ...messageObj
+            })
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // setMessageInput('')
+        // let messageObj: any = {
+        //     deviceID,
+        //     message: messageInput,
+        //     createdAt: new Date(),
+        //     name: participantData?.name
+        // }
+        // if(imageToSend.length !== 0) {
+        //     messageObj.image = imageToSend
+        //     setImageToSend('')
+        // }
+        // const newMessageArray = [
+        //     messageObj,
+        //     ...messages,
+        // ]
+        // setMessages(newMessageArray)
+
+        // await socket?.emit('room.activity', {
+        //     activityType: 'messages',
+        //     ...messageObj
+        // })
     }
 
     const hideSelectedMessageOptions = () => {
@@ -176,9 +247,14 @@ const Messages = (props: MeetingProps) => {
             mediaType: 'photo',
             cropperCancelText: 'Cancel',
             cropperChooseText: 'Choose',
-            includeBase64: true
+            includeBase64: true,
+            compressImageQuality: 0.5
         }).then(async (image: any) => {
+            const sizeInMB = parseFloat((image?.size / (1024 * 1024)).toFixed())
             setImageToSend(`data:image/jpeg;base64,${image?.data}`)
+            console.log('sizeInMB =>', sizeInMB)
+            console.log('mul =>', sizeInMB * 2)
+            setImageToSendSize(sizeInMB * 2)
         })
     }
 
