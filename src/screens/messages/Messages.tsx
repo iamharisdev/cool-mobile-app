@@ -1,9 +1,9 @@
 import {
     View, StyleSheet, Dimensions, FlatList, Modal, SafeAreaView,
-    StatusBar, TouchableOpacity, Platform, TextInput, ScrollView, Text as ReactText
+    StatusBar, TouchableOpacity, Platform, TextInput, ScrollView, Text as ReactText, Image
 } from 'react-native'
 import React, { useState, useEffect, useReducer } from 'react'
-import { Colors, Fonts } from '../../res'
+import { Colors, Fonts, Images } from '../../res'
 import { Typography, wp } from '../../global'
 import { Text } from '../../components'
 import AntDesign from 'react-native-vector-icons/AntDesign'
@@ -13,6 +13,7 @@ import { useGlobalContext } from '../../services'
 import { getDeviceID } from '../../services/common/CommonServices'
 import moment from 'moment'
 import Clipboard from '@react-native-clipboard/clipboard';
+import ImagePicker from 'react-native-image-crop-picker';
 
 
 interface MeetingProps {
@@ -26,7 +27,7 @@ const Messages = (props: MeetingProps) => {
     const [messageInput, setMessageInput] = useState('')
     const [deviceID, setDeviceID] = useState('')
     const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
-
+    const [imageToSend, setImageToSend] = useState('')
 
     const {
         visible = false,
@@ -102,6 +103,14 @@ const Messages = (props: MeetingProps) => {
                 <Text style={Styles.messageTxt}>
                     {item?.message}
                 </Text>
+                {
+                    item?.image && item?.image?.length !== 0 &&
+                    <Image
+                        source={{ uri: item?.image }}
+                        resizeMode='cover'
+                        style={Styles.messageImage}
+                    />
+                }
                 <ReactText style={Styles.messageTime}>
                     {moment(item?.createdAt).format('HH:mm')}
                 </ReactText>
@@ -129,25 +138,27 @@ const Messages = (props: MeetingProps) => {
     const onChangeText = (text: string) => setMessageInput(text)
 
     const onSendPress = async () => {
-        if(messageInput.length !== 0) {
-            setMessageInput('')
-            const messageObj = {
-                deviceID,
-                message: messageInput,
-                createdAt: new Date(),
-                name: participantData?.name
-            }
-            const newMessageArray = [
-                messageObj,
-                ...messages,
-            ]
-            setMessages(newMessageArray)
-
-            await socket?.emit('room.activity', {
-                activityType: 'messages',
-                ...messageObj
-            })
+        setMessageInput('')
+        let messageObj: any = {
+            deviceID,
+            message: messageInput,
+            createdAt: new Date(),
+            name: participantData?.name
         }
+        if(imageToSend.length !== 0) {
+            messageObj.image = imageToSend
+            setImageToSend('')
+        }
+        const newMessageArray = [
+            messageObj,
+            ...messages,
+        ]
+        setMessages(newMessageArray)
+
+        await socket?.emit('room.activity', {
+            activityType: 'messages',
+            ...messageObj
+        })
     }
 
     const hideSelectedMessageOptions = () => {
@@ -156,6 +167,22 @@ const Messages = (props: MeetingProps) => {
             element.copied = false
         })
         forceUpdate()
+    }
+
+    const onGalleryPress = () => {
+        ImagePicker.openPicker({
+            cropping: false,
+            mediaType: 'photo',
+            cropperCancelText: 'Cancel',
+            cropperChooseText: 'Choose',
+            includeBase64: true
+        }).then(async (image: any) => {
+            setImageToSend(`data:image/jpeg;base64,${image?.data}`)
+        })
+    }
+
+    const onCloseImagePress = () => {
+        setImageToSend('')
     }
 
     return (
@@ -203,15 +230,53 @@ const Messages = (props: MeetingProps) => {
                         </ScrollView>
                     </TouchableOpacity>
                     <View style={Styles.inputOuterCon}>
-                        <TextInput
-                            value={messageInput}
-                            onChangeText={onChangeText}
-                            style={Styles.input}
-                            multiline
-                            keyboardAppearance="dark"
-                        />
+                        <TouchableOpacity
+                            activeOpacity={0.8}
+                            onPress={onGalleryPress}
+                        >
+                            <Image
+                                source={Images.gallery}
+                                resizeMode='contain'
+                                style={Styles.gallery}
+                            />
+                        </TouchableOpacity>
+                        <View style={Styles.inputContainer}>
+                            {
+                                imageToSend.length !== 0 &&
+                                <View style={Styles.inputImageOuter}>
+                                    <Image
+                                        source={{ uri: imageToSend }}
+                                        resizeMode='cover'
+                                        style={Styles.inputImage}
+                                    />
+                                    <TouchableOpacity
+                                        style={Styles.closeImage}
+                                        onPress={onCloseImagePress}
+                                    >
+                                        <AntDesign
+                                            name='closecircle'
+                                            size={22}
+                                            color={Colors.color2}
+                                        />
+                                    </TouchableOpacity>
+
+                                </View>
+                            }
+                            <TextInput
+                                value={messageInput}
+                                onChangeText={onChangeText}
+                                style={[Styles.input, imageToSend.length !== 0 && { paddingLeft: wp(6), paddingBottom: 20 }]}
+                                multiline
+                                keyboardAppearance="dark"
+                            />
+                        </View>
+
                         <Ripple style={Styles.sendBtn}
                             onPress={onSendPress}
+                            disabled={
+                                messageInput.length === 0 && imageToSend.length === 0
+                                    ? true : false
+                            }
                         >
                             <Ionicons name='send' color={Colors.color2} size={20} />
                         </Ripple>
@@ -295,23 +360,28 @@ const Styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingHorizontal: wp(4),
+        paddingHorizontal: wp(3),
         backgroundColor: Colors.color17,
         borderTopWidth: 1,
         borderTopColor: Colors.color18,
     },
     input: {
-        width: wp(80),
+        width: wp(72),
         minHeight: 40,
-        maxHeight: 250,
-        backgroundColor: Colors.color19,
-        borderRadius: 50,
+        maxHeight: 500,
         paddingHorizontal: wp(4),
         color: Colors.color2,
         fontSize: Typography.small,
         paddingTop: Platform.OS === 'android' ? 2 : 10,
         paddingBottom: 5,
-        overflow: 'hidden'
+        overflow: 'hidden',
+    },
+    inputContainer: {
+        backgroundColor: Colors.color19,
+        borderRadius: 50,
+        minHeight: 40,
+        maxHeight: 500,
+        overflow: 'hidden',
     },
     sendBtn: {
         width: width * 0.10,
@@ -351,5 +421,32 @@ const Styles = StyleSheet.create({
         fontFamily: Fonts.APPFONT_SB,
         fontSize: Typography.tiny,
         includeFontPadding: false
+    },
+    gallery: {
+        width: 30,
+        height: 30,
+    },
+    messageImage: {
+        width: '100%',
+        borderRadius: 8,
+        height: 200,
+        marginVertical: 5
+    },
+    inputImageOuter: {
+        width: 80,
+        height: 80,
+        marginTop: 20,
+        marginBottom: 5,
+        marginHorizontal: wp(5),
+    },
+    inputImage: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 8
+    },
+    closeImage: {
+        position: 'absolute',
+        right: -wp(2),
+        top: -9
     }
 })

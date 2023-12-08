@@ -130,7 +130,6 @@ const Settings = ({ navigation }: any) => {
     const onImageLoadStart = () => setImageFetchLoader(true)
     const onImageLoadEnd = () => setImageFetchLoader(false)
 
-    console.log(userImage)
     return (
         <Container
             header={{ title: "settings", headerRight }}
