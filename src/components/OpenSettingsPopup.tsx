@@ -3,12 +3,10 @@ import React from 'react'
 import { Colors, Fonts, Images } from '../res'
 import { Animation } from '../animations'
 import { Typography, wp } from '../global'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import Ripple from 'react-native-material-ripple'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import Text from './Text'
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import Feather from 'react-native-vector-icons/Feather'
 
 interface OpenSettingsPopupProps extends ModalProps {
     onClose?: () => void

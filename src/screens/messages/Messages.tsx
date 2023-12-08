@@ -1,11 +1,12 @@
 import {
     View, StyleSheet, Dimensions, FlatList, Modal, SafeAreaView,
-    StatusBar, TouchableOpacity, Platform, TextInput, ScrollView, Text as ReactText, Image
+    StatusBar, TouchableOpacity, Platform, TextInput, ScrollView, Text as ReactText,
+    Image as ReactImage
 } from 'react-native'
 import React, { useState, useEffect, useReducer } from 'react'
 import { Colors, Fonts, Images } from '../../res'
 import { Typography, wp } from '../../global'
-import { Text } from '../../components'
+import { Image, Text } from '../../components'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Ripple from 'react-native-material-ripple'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -91,11 +92,11 @@ const Messages = (props: MeetingProps) => {
         const isMyMessage = item?.deviceID === deviceID ? true : false
         const isSelected = item?.selected ? true : false
         return (
-            <TouchableOpacity
+            <View
                 style={[Styles.itemContainer,
                 isMyMessage ? Styles.myMessageCon : Styles.otherMessageCon]}
-                onPress={onMessagePress.bind(null, item)}
-                activeOpacity={0.8}
+            // onPress={onMessagePress.bind(null, item)}
+            // activeOpacity={0.8}
             >
                 <Text style={Styles.userName}>
                     {isMyMessage ? 'you' : item?.name}
@@ -106,7 +107,7 @@ const Messages = (props: MeetingProps) => {
                 {
                     item?.image && item?.image?.length !== 0 &&
                     <Image
-                        source={{ uri: item?.image }}
+                        images={[item?.image]}
                         resizeMode='cover'
                         style={Styles.messageImage}
                     />
@@ -131,7 +132,7 @@ const Messages = (props: MeetingProps) => {
                         </Text>
                     </TouchableOpacity>
                 }
-            </TouchableOpacity>
+            </View>
         )
     }
 
@@ -234,7 +235,7 @@ const Messages = (props: MeetingProps) => {
                             activeOpacity={0.8}
                             onPress={onGalleryPress}
                         >
-                            <Image
+                            <ReactImage
                                 source={Images.gallery}
                                 resizeMode='contain'
                                 style={Styles.gallery}
@@ -245,7 +246,7 @@ const Messages = (props: MeetingProps) => {
                                 imageToSend.length !== 0 &&
                                 <View style={Styles.inputImageOuter}>
                                     <Image
-                                        source={{ uri: imageToSend }}
+                                        images={[imageToSend]}
                                         resizeMode='cover'
                                         style={Styles.inputImage}
                                     />
@@ -427,10 +428,10 @@ const Styles = StyleSheet.create({
         height: 30,
     },
     messageImage: {
-        width: '100%',
+        width: wp(74),
         borderRadius: 8,
         height: 200,
-        marginVertical: 5
+        marginBottom: 5
     },
     inputImageOuter: {
         width: 80,
@@ -440,8 +441,8 @@ const Styles = StyleSheet.create({
         marginHorizontal: wp(5),
     },
     inputImage: {
-        width: '100%',
-        height: '100%',
+        width: 80,
+        height: 80,
         borderRadius: 8
     },
     closeImage: {
