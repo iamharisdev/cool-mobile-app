@@ -250,11 +250,9 @@ const Messages = (props: MeetingProps) => {
             includeBase64: true,
             compressImageQuality: 0.5
         }).then(async (image: any) => {
-            const sizeInMB = parseFloat((image?.size / (1024 * 1024)).toFixed())
+            const sizeInMB = parseFloat((image?.size / (1024 * 1024)).toFixed(1));
             setImageToSend(`data:image/jpeg;base64,${image?.data}`)
-            console.log('sizeInMB =>', sizeInMB)
-            console.log('mul =>', sizeInMB * 2)
-            setImageToSendSize(sizeInMB * 2)
+            setImageToSendSize(sizeInMB * 3)
         })
     }
 
