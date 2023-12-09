@@ -11,7 +11,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import Ripple from 'react-native-material-ripple'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { useGlobalContext } from '../../services'
-import { getDeviceID } from '../../services/common/CommonServices'
+import { getDeviceID, getTimeStamp } from '../../services/common/CommonServices'
 import moment from 'moment'
 import Clipboard from '@react-native-clipboard/clipboard';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -92,12 +92,13 @@ const Messages = (props: MeetingProps) => {
     const renderMessages = ({ item }: any) => {
         const isMyMessage = item?.deviceID === deviceID ? true : false
         const isSelected = item?.selected ? true : false
+
         return (
-            <View
+            <TouchableOpacity
                 style={[Styles.itemContainer,
                 isMyMessage ? Styles.myMessageCon : Styles.otherMessageCon]}
-            // onPress={onMessagePress.bind(null, item)}
-            // activeOpacity={0.8}
+                onPress={onMessagePress.bind(null, item)}
+                activeOpacity={0.8}
             >
                 <Text style={Styles.userName}>
                     {isMyMessage ? 'you' : item?.name}
@@ -133,20 +134,20 @@ const Messages = (props: MeetingProps) => {
                         </Text>
                     </TouchableOpacity>
                 }
-            </View>
+            </TouchableOpacity>
         )
     }
 
     const onChangeText = (text: string) => setMessageInput(text)
 
     const onSendPress = async () => {
-
         setMessageInput('')
         let messageObj: any = {
             deviceID,
             message: messageInput,
             createdAt: new Date(),
-            name: participantData?.name
+            name: participantData?.name,
+            id: getTimeStamp()
         }
         if(imageToSend.length !== 0) {
             messageObj.image = imageToSend
@@ -161,33 +162,29 @@ const Messages = (props: MeetingProps) => {
             setImageToSend('')
             const chunkSize = imageToSend.length / imageToSendSize;
             const totalChunks = Math.ceil(imageToSend.length / chunkSize);
-            console.log('totalChunks =>', totalChunks)
             let chunksProcessed = 0;
 
             async function sendChunk(chunk: any, callback: any) {
-
                 await socket?.emit('room.activity', {
                     activityType: 'messages',
-                    deviceID,
+                    id: messageObj.id,
                     chunk: chunk
                 })
                 chunksProcessed++;
-
                 if(chunksProcessed === totalChunks) {
                     if(callback) {
                         callback();
                     }
                 }
             }
-
             for(let i = 0; i < imageToSend.length; i += chunkSize) {
                 const chunk = imageToSend.substring(i, i + chunkSize);
                 sendChunk(chunk, async () => {
                     delete messageObj.image
                     await socket?.emit('room.activity', {
                         activityType: 'messages',
+                        chunkFinished: true,
                         ...messageObj,
-                        chunkFinished: true
                     })
                 });
             }
@@ -197,40 +194,6 @@ const Messages = (props: MeetingProps) => {
                 ...messageObj
             })
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // setMessageInput('')
-        // let messageObj: any = {
-        //     deviceID,
-        //     message: messageInput,
-        //     createdAt: new Date(),
-        //     name: participantData?.name
-        // }
-        // if(imageToSend.length !== 0) {
-        //     messageObj.image = imageToSend
-        //     setImageToSend('')
-        // }
-        // const newMessageArray = [
-        //     messageObj,
-        //     ...messages,
-        // ]
-        // setMessages(newMessageArray)
-
-        // await socket?.emit('room.activity', {
-        //     activityType: 'messages',
-        //     ...messageObj
-        // })
     }
 
     const hideSelectedMessageOptions = () => {

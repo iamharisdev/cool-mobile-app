@@ -289,16 +289,16 @@ const MeetingRoom = ({ navigation, route }: any) => {
     let chunkMap = new Map<string, string>(); // Map<deviceID, accumulatedChunks>
 
     const onMessage = (res: any) => {
-        const { chunk, deviceID, chunkFinished } = res;
+        const { chunk, id, chunkFinished } = res;
 
         if(chunk) {
             // Accumulate chunks in the map
-            const accumulatedChunks = chunkMap.get(deviceID) || '';
-            chunkMap.set(deviceID, accumulatedChunks + chunk);
+            const accumulatedChunks = chunkMap.get(id) || '';
+            chunkMap.set(id, accumulatedChunks + chunk);
         } else if(chunkFinished) {
             // Retrieve accumulated chunks, delete from the map, and set in the response
-            const completeChunk = chunkMap.get(deviceID) || '';
-            chunkMap.delete(deviceID);
+            const completeChunk = chunkMap.get(id) || '';
+            chunkMap.delete(id);
             res.image = completeChunk;
 
             // Update the messages array
@@ -311,38 +311,6 @@ const MeetingRoom = ({ navigation, route }: any) => {
         }
     };
 
-
-
-
-
-    // let chunkArray: any = []
-
-    // const onMessage = (res: any) => {
-    //     if(res?.chunk) {
-    //         chunkArray.push(res)
-    //     }
-    //     else if(res?.chunkFinished) {
-    //         let completeChunk = ''
-    //         chunkArray.forEach((element: any) => {
-    //             if(element.deviceID === res.deviceID) {
-    //                 completeChunk = completeChunk + element.chunk
-    //             }
-    //         })
-    //         res.image = completeChunk
-    //         const newMessageArray = [
-    //             res,
-    //             ...messagesRef.current,
-    //         ]
-    //         setMessages(newMessageArray)
-    //     }
-    //     else {
-    //         const newMessageArray = [
-    //             res,
-    //             ...messagesRef.current,
-    //         ]
-    //         setMessages(newMessageArray)
-    //     }
-    // }
 
     const onVideoEnablePressCommon = async (videoTrack: any) => {
         participantDataRef.current = {

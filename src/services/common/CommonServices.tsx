@@ -85,27 +85,6 @@ const screenShareNotification = async () => {
 }
 
 const rtcServer = {
-    // "iceServers": [
-    //     {
-    //         "urls": [
-    //             "stun:ss-turn1.xirsys.com"
-    //         ]
-    //     },
-    //     {
-    //         "username": "WXcawuK5hO8vSB5ffd73UZHwNXrE4L8bRJ5F2rkEZWPZLsJdA98NkJ_ZipBK-h5AAAAAAGQJp_BzRmFjdG9yeQ==",
-    //         "credential": "775766ce-be5d-11ed-9257-0242ac140004",
-    //         "urls": [
-    //             "turn:ss-turn1.xirsys.com:80?transport=udp",
-    //             "turn:ss-turn1.xirsys.com:3478?transport=udp",
-    //             "turn:ss-turn1.xirsys.com:80?transport=tcp",
-    //             "turn:ss-turn1.xirsys.com:3478?transport=tcp",
-    //             "turns:ss-turn1.xirsys.com:443?transport=tcp",
-    //             "turns:ss-turn1.xirsys.com:5349?transport=tcp"
-    //         ]
-    //     }
-    // ],
-    // iceCandidatePoolSize: 10,
-
     "iceServers": [
         {
             urls: ["stun:turn.selfcool.top:3478"]
@@ -160,8 +139,12 @@ const imageResizer = (params: any) => {
                 reject('')
             });
     })
+}
 
+const getTimeStamp = () => {
+    let date = new Date();
+    return date.getTime();
 }
 
 
-export { LOG, getLocalMedia, getDeviceID, getDisplayMedia, rtcServer, screenShareNotification, imageResizer }
+export { LOG, getLocalMedia, getDeviceID, getDisplayMedia, rtcServer, screenShareNotification, imageResizer, getTimeStamp }
