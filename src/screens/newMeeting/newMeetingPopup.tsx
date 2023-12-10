@@ -54,7 +54,6 @@ const NewMeetingPopup = (props: NewMeetingPopupProps) => {
 
     const onContinuePress = async () => {
         const localMedia: any = await getLocalMedia()
-
         if(!localMedia) {
             setOpenSettingsPopup(true)
             return
@@ -139,8 +138,8 @@ const NewMeetingPopup = (props: NewMeetingPopupProps) => {
     const generateRandomID = async () => {
         try {
             const timestamp = Date.now().toString()
-            const trimmedRandomID = timestamp.slice(-9);
-            // const trimmedRandomID = timestamp.slice(-3);
+            // const trimmedRandomID = timestamp.slice(-9);
+            const trimmedRandomID = timestamp.slice(-5);
             setMeetingID(trimmedRandomID)
         } catch(error) {
             console.log('Error while getting device ID:', error);

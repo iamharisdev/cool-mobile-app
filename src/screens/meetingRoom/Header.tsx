@@ -7,10 +7,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import MeetingDetail from './MeetingDetail'
 import { Text } from '../../components'
 import InCallManager from 'react-native-incall-manager';
-import DeviceInfo from 'react-native-device-info'
 import moment from 'moment-timezone'
 import { getTimeZone } from "react-native-localize";
-
 
 interface headerProps {
     meetingID: string,
@@ -40,7 +38,7 @@ const Header = (props: headerProps) => {
     const [timerInterval, setTimerInterval] = useState<any>(null);
 
 
-    const onSpeakerPress = () => {
+    const onSpeakerPress = async () => {
         if(!speaker) {
             InCallManager.setForceSpeakerphoneOn(true);
             InCallManager.setSpeakerphoneOn(true)

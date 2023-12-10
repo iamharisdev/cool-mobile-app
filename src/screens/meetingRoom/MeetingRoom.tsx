@@ -181,10 +181,12 @@ const MeetingRoom = ({ navigation, route }: any) => {
         }
     }, [isCaptured])
 
+
     // @saad
     useEffect(() => {
         if(rtcAllConnectionRef.current && rtcAllConnectionRef?.current.length === 0) {
             InCallManager.setKeepScreenOn(true)
+
             let rtcConnection: any = new RTCPeerConnection(rtcServer)
             const audioTrack = localMediaRef.current?.getAudioTracks()[0]
             if(audioTrack) {
@@ -310,7 +312,6 @@ const MeetingRoom = ({ navigation, route }: any) => {
             setMessages(newMessageArray);
         }
     };
-
 
     const onVideoEnablePressCommon = async (videoTrack: any) => {
         participantDataRef.current = {

@@ -10,7 +10,6 @@ const getLocalMedia = async (audio = true, video = true) => {
                 width: { min: 1280, ideal: 1920 },
                 height: { min: 720, ideal: 1080 },
                 frameRate: { min: 30 },
-                // facingMode: 'environment',
                 facingMode: 'user',
                 resizeMode: 'none',
             } : false,

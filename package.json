@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "ios": "npx react-native run-ios --udid 523B936F-D05D-43FE-B0D1-33D02C906DE9",
+    "ios": "npx react-native run-ios --udid F0C3DD82-65A0-4172-BF4A-989A5240F4C7",
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest"
@@ -27,6 +27,7 @@
     "react-native": "0.72.5",
     "react-native-actions-sheet": "^0.9.0-alpha.24",
     "react-native-animatable": "^1.3.3",
+    "react-native-callkeep": "^4.3.12",
     "react-native-device-info": "^10.11.0",
     "react-native-flash-message": "^0.4.2",
     "react-native-gesture-handler": "^2.14.0",
@@ -42,6 +43,7 @@
     "react-native-screens": "^3.25.0",
     "react-native-spinkit": "^1.5.1",
     "react-native-switch": "^1.5.1",
+    "react-native-uuid": "^2.0.1",
     "react-native-vector-icons": "^10.0.0",
     "react-native-webrtc": "^111.0.6",
     "rn-fetch-blob": "^0.12.0",

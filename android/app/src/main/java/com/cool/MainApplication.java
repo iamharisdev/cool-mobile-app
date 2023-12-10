@@ -57,10 +57,10 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
 
     // Added below code by saad for webRTC Default speaker on
-    AudioManager manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-      if (manager != null) {
-          manager.setSpeakerphoneOn(true);
-      }
+    // AudioManager manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+    //   if (manager != null) {
+    //       manager.setSpeakerphoneOn(true);
+    //   }
     // Code added by saad end here
 
     SoLoader.init(this, /* native exopackage */ false);

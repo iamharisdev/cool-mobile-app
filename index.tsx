@@ -9,9 +9,9 @@ import './src/languages/i18n';
 import notifee from '@notifee/react-native';
 
 notifee.registerForegroundService(notification => {
-    return new Promise(() => {
+  return new Promise(() => {
 
-    });
+  });
 });
 
 AppRegistry.registerComponent(appName, () => App);
