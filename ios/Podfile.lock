@@ -376,18 +376,22 @@ PODS:
   - React-jsinspector (0.72.5)
   - React-logger (0.72.5):
     - glog
-  - react-native-image-picker (7.0.2):
+  - react-native-image-picker (7.1.0):
+    - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - react-native-image-resizer (3.0.7):
     - React-Core
   - react-native-is-captured (0.1.2):
     - React-Core
-  - react-native-netinfo (11.1.0):
+  - react-native-netinfo (11.2.0):
     - React-Core
   - react-native-safe-area-context (4.7.2):
     - React-Core
   - react-native-spinkit (1.4.1):
     - React
+  - react-native-twilio-video-webrtc (3.1.0):
+    - React
+    - TwilioVideo (~> 4.6)
   - react-native-webrtc (111.0.6):
     - JitsiWebRTC (~> 111.0.0)
     - React-Core
@@ -527,7 +531,7 @@ PODS:
     - React-Core
     - React-RCTImage
     - TOCropViewController
-  - RNLocalize (3.0.3):
+  - RNLocalize (3.0.4):
     - React-Core
   - RNNotifee (7.8.0):
     - React-Core
@@ -545,6 +549,7 @@ PODS:
     - React-Core
   - SocketRocket (0.6.1)
   - TOCropViewController (2.6.1)
+  - TwilioVideo (4.6.3)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -601,6 +606,7 @@ DEPENDENCIES:
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-spinkit (from `../node_modules/react-native-spinkit`)
+  - react-native-twilio-video-webrtc (from `../node_modules/react-native-twilio-video-webrtc`)
   - react-native-webrtc (from `../node_modules/react-native-webrtc`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -633,6 +639,7 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
+  - TwilioVideo
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -652,6 +659,7 @@ SPEC REPOS:
     - OpenSSL-Universal
     - SocketRocket
     - TOCropViewController
+    - TwilioVideo
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -710,6 +718,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-spinkit:
     :path: "../node_modules/react-native-spinkit"
+  react-native-twilio-video-webrtc:
+    :path: "../node_modules/react-native-twilio-video-webrtc"
   react-native-webrtc:
     :path: "../node_modules/react-native-webrtc"
   React-NativeModulesApple:
@@ -812,12 +822,13 @@ SPEC CHECKSUMS:
   React-jsiexecutor: ff70a72027dea5cc7d71cfcc6fad7f599f63987a
   React-jsinspector: aef73cbd43b70675f572214d10fa438c89bf11ba
   React-logger: 2e4aee3e11b3ec4fa6cfd8004610bbb3b8d6cca4
-  react-native-image-picker: 2e2e82aba9b6a91a7c78f7d9afde341a2659c7b8
+  react-native-image-picker: 5e076db26cd81660cfb6db5bcf517cfa12054d45
   react-native-image-resizer: 681f7607418b97c084ba2d0999b153b103040d8a
   react-native-is-captured: fc28fb90be61d8e5dea0ca9fcea7347e2168bd35
-  react-native-netinfo: 3aa5637c18834966e0c932de8ae1ae56fea20a97
+  react-native-netinfo: 25c87e28495d955b30aeca9c22594691668c907a
   react-native-safe-area-context: 7aa8e6d9d0f3100a820efb1a98af68aa747f9284
   react-native-spinkit: da294fd828216ad211fe36a5c14c1e09f09e62db
+  react-native-twilio-video-webrtc: e2a899018ce860eb8dd703bd51d82903517f47b7
   react-native-webrtc: 255a1172fd31525b952b36aef7b8e9a41de325e5
   React-NativeModulesApple: 797bc6078d566eef3fb3f74127e6e1d2e945a15f
   React-perflogger: cd8886513f68e1c135a1e79d20575c6489641597
@@ -845,16 +856,17 @@ SPEC CHECKSUMS:
   RNFlashList: 1983f915ae34e9253e413f31387959590d102f5e
   RNGestureHandler: 32a01c29ecc9bb0b5bf7bc0a33547f61b4dc2741
   RNImageCropPicker: d9616a0cb9b72e8551ff94a7a5021fbd29050aa5
-  RNLocalize: 7ce27517894956a226aa6d614786802d253a0a0a
+  RNLocalize: 1ce4263770515f53d3de442ce7657b3661b16a37
   RNNotifee: f3c01b391dd8e98e67f539f9a35a9cbcd3bae744
   RNReanimated: fdbaa9c964bbab7fac50c90862b6cc5f041679b9
   RNScreens: 85d3880b52d34db7b8eeebe2f1a0e807c05e69fa
   RNVectorIcons: 8b5bb0fa61d54cd2020af4f24a51841ce365c7e9
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
+  TwilioVideo: 4afaac028c5886f2f3b313a9fcc146a6b7ca34e2
   Yoga: 86fed2e4d425ee4c6eab3813ba1791101ee153c6
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: d3c8342acc378b2b7903b5a8aa8cea79e6dc896e
+PODFILE CHECKSUM: 1edc786debe89453c3ca76d7a89e6a849eb1af0b
 
 COCOAPODS: 1.11.3

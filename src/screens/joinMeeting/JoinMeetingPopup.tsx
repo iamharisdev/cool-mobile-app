@@ -11,6 +11,7 @@ import DeviceInfo, { getUniqueId } from 'react-native-device-info';
 import { OverlayLoader } from '../../components/loaders'
 import { useGlobalContext } from '../../services'
 
+
 interface JoinMeetingPopupProps {
     visible: boolean,
     onClose: () => void
@@ -54,6 +55,7 @@ const JoinMeetingPopup = (props: JoinMeetingPopupProps) => {
     useEffect(() => {
         DeviceInfo.getDeviceName().then((res) => {
             setName(res)
+           
         })
     }, [])
 
@@ -98,7 +100,7 @@ const JoinMeetingPopup = (props: JoinMeetingPopupProps) => {
         const meetingIDModified = meetingID.trim()
         const nameModified = name.trim()
 
-        if(meetingIDModified.length === 0) {
+        if(meetingIDModified.length === 0) {1
             setMeetingIDError(emptyFieldError)
         }
         if(nameModified.length === 0) {
@@ -159,6 +161,7 @@ const JoinMeetingPopup = (props: JoinMeetingPopupProps) => {
                         meetingStartTime: response?.startTime
                     })
             } catch(error) {
+               
                 hideOverlayLoader()
             }
         }
@@ -213,13 +216,18 @@ const JoinMeetingPopup = (props: JoinMeetingPopupProps) => {
             />
             <Button
                 text='continue'
-                onPress={onContinuePress}
+               // onPress={onContinuePress}
+               onPress={()=>navigation.navigate('LiveStreaming')}
                 buttonOuterStyle={Styles.continueBtn}
             />
             <OpenSettingsPopup
                 visible={openSettingsPopup}
                 onClose={hideSettingsPopup}
             />
+
+
+
+
         </ActionSheet>
     )
 }

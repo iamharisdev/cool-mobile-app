@@ -6,6 +6,7 @@ import {
 } from '../screens'
 import { useGlobalContext } from '../services';
 import ParentListener from './ParentListener';
+import { LiveStreaming } from '../screens/liveStreaming';
 
 
 const Stack = createNativeStackNavigator();
@@ -36,6 +37,10 @@ const RootNavigation = () => {
                         <Stack.Screen name="MeetingRoom" component={MeetingRoom}
                             options={{ animation: 'slide_from_bottom' }}
                         />
+                        <Stack.Screen name="LiveStreaming" component={LiveStreaming}
+                            options={{ animation: 'slide_from_bottom' }}
+                        />
+
                     </Stack.Navigator>
             }
             <ParentListener />

@@ -30,11 +30,13 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>$(PRODUCT_NAME) want to access camera for the meeting communcation</string>
+
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>$(PRODUCT_NAME) want to access microphone for the meeting communcation</string>
+	
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>$(PRODUCT_NAME) want to access photo library for the profile image update</string>
 	<key>RTCAppGroupIdentifier</key>
 	<string>group.com.selfcool</string>
 	<key>RTCScreenSharingExtension</key>
@@ -80,12 +82,14 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>$(PRODUCT_NAME) want to access photo library for the profile image update</string>
 </dict>
 </plist>

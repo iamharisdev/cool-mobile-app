@@ -11,6 +11,8 @@ interface ButtonProps {
     buttonStyle?: ViewStyle,
     buttonOuterStyle?: ViewStyle,
     textStyle?: TextStyle
+    leftChild?:any,
+    rightChild?:any
 }
 
 const Button = (props: ButtonProps) => {
@@ -20,7 +22,9 @@ const Button = (props: ButtonProps) => {
         text = '',
         buttonStyle = {},
         buttonOuterStyle = {},
-        textStyle = {}
+        textStyle = {},
+        leftChild,
+        rightChild,
     } = props
     return (
         <View style={[Styles.container, buttonOuterStyle]}>
@@ -29,9 +33,13 @@ const Button = (props: ButtonProps) => {
                 onPress={onPress}
                 rippleOpacity={0.2}
             >
+                {leftChild}
+                {text&&
                 <Text style={[Styles.btnTxt, textStyle]}>
                     {t(`${text}`)}
                 </Text>
+}
+                {rightChild}
             </Ripple>
         </View>
     )
@@ -50,13 +58,14 @@ const Styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: Colors.color4,
-        paddingHorizontal: 20
+        paddingHorizontal: 20,
+        flexDirection:'row'
     },
     btnTxt: {
         color: Colors.color2,
         fontFamily: Fonts.APPFONT_SB,
         fontSize: Typography.small1,
         includeFontPadding: false,
-        marginBottom: 3
+        marginBottom: 4.5
     }
 })
